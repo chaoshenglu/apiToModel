@@ -63,44 +63,74 @@
 </span></div></div></span></span></td></tr><tr><td style="vertical-align: top; padding-right: 0.2em;"><!-- react-text: 1718 -->canGiveFriend<!-- /react-text --></td><td style="vertical-align: top;"><span class="model"><span class="prop"><span class="prop-type">integer</span><span class="prop-format"><!-- react-text: 1724 -->($<!-- /react-text --><!-- react-text: 1725 -->int32<!-- /react-text --><!-- react-text: 1726 -->)<!-- /react-text --></span><span style="color: rgb(153, 153, 153); font-style: italic;"><br><!-- react-text: 1729 -->allowEmptyValue<!-- /react-text --><!-- react-text: 1730 -->: <!-- /react-text --><!-- react-text: 1731 -->false<!-- /react-text --></span><div class="markdown"><div><span><p>卡券是否可转赠</p>
 </span></div></div></span></span></td></tr></tbody></table>
 
-<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
-<script>
-var json = [];
-$('.model').find('tr').each(function(){
-var obj = {},i=0,key='',value='',type='';
-$(this).find('td').each(function(){
-if(i==0){
-key = $(this).text();
-}else{
-value = $(this).find('.markdown').text();
-type = $(this).find('.prop-type').text();
-}
-i++
-})
-obj[key] = value;
-obj['type'] = type;
-json.push(obj);
-})
+<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js">
+</script>
 
-console.log(JSON.stringify(json));
+<script>
+
+
+var keyArr = []
+$('.model').find('tr').each(function(){
+    var i = 0;
+    $(this).find('td').each(function(){
+        if(i == 0){
+            var key = $(this).text();
+            keyArr.push(key)
+        }
+        i++;
+    })
+})
+keyArr.sort()
+console.log(JSON.stringify(keyArr));
+
+
+var markDic = {}
+$('.model').find('tr').each(function(){
+	var i = 0, key = '', value = '';
+	$(this).find('td').each(function(){
+	    if(i == 0){
+	        key = $(this).text();
+	    }else{
+	        value = $(this).find('.markdown').text();
+	    }
+	    i++;
+	})
+	markDic[key] = value;
+})
+console.log(JSON.stringify(markDic));
+
+
+var typeDic = {}
+$('.model').find('tr').each(function(){
+	var i = 0, key = '', value = '';
+	$(this).find('td').each(function(){
+	    if(i == 0){
+	        key = $(this).text();
+	    }else{
+	        value = $(this).find('.prop-type').text();
+	    }
+	    i++;
+	})
+	typeDic[key] = value;
+})
+console.log(JSON.stringify(typeDic));
+
 
 var mstr = ''
-for (var i=0;i<json.length;i++) {
-	var obj = json[i];
-	for (var key in obj) {
-		if (key != 'type'){
-			var value = obj[key]
-			var type = obj['type']
-			if (type == 'string'){
-				type = 'String?'
-			}else if (type == 'integer'){
-				type = 'Int?'
-			}
-    		mstr = mstr + '///' + value + 'var ' + key + ' : ' + type + '\n'
-		}
-	}
+for (var i = 0; i < keyArr.length; i++) {
+    var key = keyArr[i]
+    var mark = markDic[key];
+    var type = typeDic[key];
+    if (type == 'string'){
+        type = 'String?'
+    }else if (type == 'integer'){
+        type = 'Int?'
+    }
+    mstr = mstr + '///' + mark + 'var ' + key + ' : ' + type + '\n'
 }
+
 console.log(mstr);
+
 
 
 </script>
